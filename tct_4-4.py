@@ -11,8 +11,7 @@ x = state[0]
 y = state[1]
 view = state[2]
 nx = 0
-ny = 0
-count = 14 
+ny = 0 
 past=[[x,y]]
 tries = 0
 
@@ -27,7 +26,6 @@ while True:
             past.append([nx,ny])
             x = nx
             y = ny
-            count += 1
             tries = 0
             continue
     elif view == 2: #남쪽을 보고 있을 때
@@ -39,7 +37,6 @@ while True:
             past.append([nx,ny])
             x = nx
             y = ny
-            count += 1
             tries = 0
             continue    
     elif view == 3: #서쪽을 보고 있을 때
@@ -51,7 +48,6 @@ while True:
             past.append([nx,ny])
             x = nx
             y = ny
-            count += 1
             tries = 0
             continue
     elif view == 0: #북쪽을 보고 있을 때
@@ -63,7 +59,6 @@ while True:
             past.append([nx,ny])
             x = nx
             y = ny
-            count += 1
             tries = 0
             continue
     if tries == 4:
