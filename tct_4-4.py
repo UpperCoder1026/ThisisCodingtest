@@ -4,8 +4,7 @@ state = list(map(int,input().split()))
 mapp = []
 
 for a in range(n):
-    temper = list(map(int, input().split()))
-    mapp.append(temper)
+    mapp.append(list(map(int, input().split())))
 
 x = state[0]
 y = state[1]
@@ -15,53 +14,33 @@ ny = 0
 past=[[x,y]]
 tries = 0
 
-step = [[-1,0],[1,0],[0,1],[0,-1]]#북, 남, 동, 서
-while True:
-    if view == 1: #동쪽을 보고 있을 때
-        view = 0
-        nx = x + step[0][0]
-        ny = y + step[0][1]
-        tries += 1
-        if mapp[nx][ny] == 0 and [nx,ny] not in past:
-            past.append([nx,ny])
-            x = nx
-            y = ny
-            tries = 0
-            continue
-    elif view == 2: #남쪽을 보고 있을 때
-        view = 1
-        nx = x + step[2][0]
-        ny = y + step[2][1]
-        tries += 1
-        if mapp[nx][ny] == 0 and [nx,ny] not in past:
-            past.append([nx,ny])
-            x = nx
-            y = ny
-            tries = 0
-            continue    
-    elif view == 3: #서쪽을 보고 있을 때
-        view = 2
-        nx = x + step[1][0]
-        ny = y + step[1][1]
-        tries += 1
-        if mapp[nx][ny] == 0 and [nx,ny] not in past:
-            past.append([nx,ny])
-            x = nx
-            y = ny
-            tries = 0
-            continue
-    elif view == 0: #북쪽을 보고 있을 때
+step = [[-1,0],[0,1],[1,0],[0,-1]]#북, 동, 남, 서
+
+def turn_left():
+    global view
+    view -= 1
+    if view == -1:
         view = 3
-        nx = x + step[3][0]
-        ny = y + step[3][1]
-        tries += 1
-        if mapp[nx][ny] == 0 and [nx,ny] not in past:
-            past.append([nx,ny])
-            x = nx
-            y = ny
-            tries = 0
-            continue
+
+while True:
+    turn_left()
+    nx = x + step[view][0]
+    ny = y + step[view][1]
+    tries += 1
+    if mapp[nx][ny] == 0 and [nx,ny] not in past:
+        past.append([nx,ny])
+        x = nx
+        y = ny
+        tries = 0
+        continue    
     if tries == 4:
-        break
+        nx = x - step[view][0]
+        ny = y - step[view][1]
+        if mapp[nx][ny] == 0:
+            if [nx,ny] not in past:
+                past.append([nx,ny])
+            x = nx
+            y = ny           
+            break
 print(len(past))
 
