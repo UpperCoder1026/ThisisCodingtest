@@ -22,24 +22,23 @@ def bfs(s,x,y):
                 if graph[i][j] == u:
                     queue.append([i,j,u])
     # 너비 우선 탐색 진행
-    count = 0
+    count = 0 #시간초를 count로
     while queue :
-        if count == s:
+        if count == s: #원하는 시간이 되었을 때 바로 종료하고 원하는 값 리턴
             break
         r,c,num = queue.popleft()
-        if num == 1:
-            count += 1
         for w in range(4):
             nr = r + dr[w]
             nc = c + dc[w]
-            if nr < 0 or nc <0 or nr >= n or nc >= 3:
+            if nr < 0 or nc <0 or nr >= n or nc >= 3: # 밖으로 나가는 경우 제외
                 continue
-            if graph[nr][nc] > 0:
+            if graph[nr][nc] > 0:# 시험관 안에 다른 바이러스가 있는 경우 제외
                 continue
-            if graph[nr][nc] == 0:
+            if graph[nr][nc] == 0:# 시험관 안데 다른 바이러스가 없는 경우에는 증식
                 graph[nr][nc] = num
                 queue.append([nr,nc,num])
-
+        if num == 3 :
+            count += 1
     return graph[x-1][y-1]
 
 print(bfs(s,x,y))
