@@ -18,24 +18,18 @@ dc = [0,0,1,-1]
 stack = [] #한번 DFS를 돌렸을때 연합한 나라 정보
 
 def dfs(r,c):#현재 지도에서 한개의 연합을 찾아내는 함수
-    global step
     visit[r][c] = True #재귀하면 바로 Visit
     for i in range(4):
         nr = r + dr[i]
         nc = c + dc[i]
-        if nr < n and nr >=0 and nc < n and nc >=0 :
-            if L <= abs(data[nr][nc] - data[r][c]) <= R and visit[nr][nc] == False: 
-                if not stack:
-                    stack.append([r,c])
-                stack.append([nr,nc])
-                step += 1 # dfs_num 선언하고 더해주지 않으면 마지막에 stack을 리턴할 때 지도를 전부 안돌고 리턴해버린다
-                dfs(nr,nc)
-                step -= 1 
-                continue                 
-            else: pass
-    if stack and step == 0: #step이 0이라는 것은 깊이 탐색을 한번만 한게아니라 여러 갈래로 한 것을 의미
-        return stack
-    else : return
+        if nr < n and nr >=0 and nc < n and nc >=0 and L <= abs(data[nr][nc] - data[r][c]) <= R and visit[nr][nc] == False:
+            if not stack:
+                stack.append([r,c])
+            stack.append([nr,nc])# dfs_num 선언하고 더해주지 않으면 마지막에 stack을 리턴할 때 지도를 전부 안돌고 리턴해버린다
+            dfs(nr,nc) 
+            continue # 리턴을 하는게 존재한다면 dfs에서는 재귀함수 뒤에 continue를 꼭 써줘야한다.               
+    return stack  #step이 0이라는 것은 깊이 탐색을 한번만 한게아니라 여러 갈래로 한 것을 의미
+
 
 
 
@@ -59,7 +53,6 @@ while True:
     for i in range(n):
         for j in range(n):
             if visit[i][j] == False:
-                step = 0
                 temp = dfs(i,j)
                 if temp:
                     union.append(temp)
