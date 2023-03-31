@@ -3,22 +3,21 @@
 n , L , R = map(int,input().split())
 
 data = []
-visit = []
+visit = [] # visit은 필요하다.
 
 for _ in range(n):
     data.append(list(map(int,input().split())))
     visit.append([False]*n)
 
 
-count = 0
+count = 0 #인구 이동 횟수
 
 dr = [-1,1,0,0]
 dc = [0,0,1,-1]
+ 
+stack = [] #한번 DFS를 돌렸을때 연합한 나라 정보
 
-stack = []
-comm = []
-
-def dfs(r,c):#여기서 연합들을 반환해줘야함
+def dfs(r,c):#현재 지도에서 한개의 연합을 찾아내는 함수
     global dfs_num
     visit[r][c] = True
     for i in range(4):
@@ -30,31 +29,28 @@ def dfs(r,c):#여기서 연합들을 반환해줘야함
                     stack.append([r,c])
                     dfs_num += 1
                 stack.append([nr,nc])
-                dfs_num += 1
+                dfs_num += 1 # dfs_num 선언하고 더해주지 않으면 마지막에 stack을 리턴할 때 지도를 전부 안돌고 리턴해버린다
                 dfs(nr,nc)
-                dfs_num -= 1
+                dfs_num -= 1 
                 continue                 
             else: pass
-    if stack and dfs_num == 1:
+    if stack and dfs_num == 1: # stack에 아무것도 없을때 [r,c]를 추가했디때문에 dfs_numdms 1로 남는다.
         return stack
     else : return
 
 
 
-def move(stack): # stack = [[[1,2][2,3][3,2]][[4,1][4,2][4,3]][]]
-    for i in range(len(stack)):
-        sum = 0
-        for j in range(len(stack[i])):
-            if stack[i][j]:
-                r,c = stack[i][j] 
-                sum += data[r][c]
-            else: pass
-        human = sum / len(stack[i])
-        for j in range(len(stack[i])):
-            if stack[i][j]:
-                r,c = stack[i][j]
-                data[r][c] = int(human)
+def move(stack): # stack = [[1,2][2,3][3,2]]
+    sum = 0
+    for j in range(len(stack)):
+        r,c = stack[j] 
+        sum += data[r][c]
+    human = sum / len(stack)
+    for j in range(len(stack)):
+        r,c = stack[j] 
+        data[r][c] = int(human)
     return   
+
 flag = False
 
 while True:
@@ -63,11 +59,9 @@ while True:
             if visit[i][j] == False:
                 dfs_num = 0
                 temp = dfs(i,j)
-                if temp:
-                    comm.append(dfs(i,j))    
-                    move(comm)
+                if temp:    
+                    move(temp)
                     flag = True
-                    comm =[]
                     stack = []
                     temp = []
                 else : pass
